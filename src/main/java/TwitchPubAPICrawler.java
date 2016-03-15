@@ -81,6 +81,7 @@ public class TwitchPubAPICrawler{
         row.add(stream.getChannelJson().getFollowers());
         row.add(stream.getChannelJson().getTotal_views());
         row.add(stream.getGame());
+        //TODO this date is just a format, need to add the current time to it.
         row.add(new SimpleDateFormat("HH:mm:ss"));
         return row;
     }

@@ -28,6 +28,7 @@ public class TwitchCSVWriter {
     }
 
     public void writeRow(List row) throws IOException{
+        //TODO not adding rows correctly at the moment
         csvFilePrinter.printRecord(row);
     }
 

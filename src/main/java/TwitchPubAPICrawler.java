@@ -56,11 +56,13 @@ public class TwitchPubAPICrawler{
             String responseString = response.readEntity(String.class);
             JsonNode responseMap  = new ObjectMapper().readTree(new StringReader(responseString)).get("stream");
             if(!responseMap.isNull()){
+                //This if statement shouldn't be needed anymore
                 if(response.getStatus() != HttpStatus.SC_OK){
                     status_ok = false;
                 }
                 StreamJson stream = new StreamJson(responseMap);
                 writer.writeRow(buildRow(stream));
+                //DEBUG
 //                stream.printStreamJson();
                 Thread.sleep(sleeptime);
             } else {

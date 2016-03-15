@@ -7,6 +7,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.io.Console;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
@@ -18,20 +20,33 @@ import java.util.Scanner;
 public class TwitchPubAPICrawler{
     TwitchCSVWriter writer = new TwitchCSVWriter();
     RESTRequestHelper requestHelper = new RESTRequestHelper();
+    Client client = ClientBuilder.newClient();
     boolean status_ok = true;
     boolean stop = false;
 
-    public TwitchPubAPICrawler(String streamer, int sleeptime) throws IOException, InterruptedException {
+    public TwitchPubAPICrawler() throws IOException, InterruptedException {
+        Console console = System.console();
+        String streamer = console.readLine("Enter a streamer: ");
+        int sleeptime = Integer.parseInt(console.readLine("Enter a sleeptime in seconds: ")) * 1000;
         SimpleDateFormat formattedDate = new SimpleDateFormat("yyyy-MM-dd");
-        Date currentDate = new Date();
-        writer.writeHeaders("logs/" + streamer + "-" + (formattedDate.format(currentDate)));
-        startCrawler(streamer, sleeptime);
-        closeCrawler();
+
+        if(streamExists(streamer)){
+            File file = new File("logs/" + streamer + "-" + (formattedDate.format(new Date())) + ".csv");
+            if(file.exists()){
+                writer.setWriteHeaders(false);
+            } else {
+                writer.setWriteHeaders(true);
+            }
+            writer.initializeCSVPrinter(file);
+            startCrawler(streamer, sleeptime);
+            closeCrawler();
+        } else {
+            System.out.println("Stream \"" + streamer + "\" doesn't exist!");
+        }
     }
 
     public void startCrawler(String streamer, int sleeptime) throws IOException, InterruptedException {
         Thread scanningThread = constructScanningThread();
-        Client client = ClientBuilder.newClient();
         WebTarget resource = client.target("https://api.twitch.tv/kraken/streams/" + streamer);
         Response response;
         scanningThread.start();
@@ -63,6 +78,11 @@ public class TwitchPubAPICrawler{
             if (input.equalsIgnoreCase("quit") || input.equalsIgnoreCase("q")) {
                 setStop(true);
             }
+            try {
+                System.in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
@@ -81,8 +101,13 @@ public class TwitchPubAPICrawler{
         row.add(stream.getChannelJson().getFollowers());
         row.add(stream.getChannelJson().getTotal_views());
         row.add(stream.getGame());
-        //TODO this date is just a format, need to add the current time to it.
-        row.add(new SimpleDateFormat("HH:mm:ss"));
+        row.add(new SimpleDateFormat("HH:mm:ss").format(new Date()));
         return row;
+    }
+
+    public boolean streamExists(String streamer){
+        WebTarget resource = client.target("https://api.twitch.tv/kraken/streams/" + streamer);
+        Response response = requestHelper.restRequest("GET",resource);
+        return response.getStatus() == HttpStatus.SC_OK;
     }
 }

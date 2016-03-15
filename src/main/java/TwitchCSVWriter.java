@@ -1,6 +1,7 @@
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
@@ -15,16 +16,23 @@ public class TwitchCSVWriter {
 
     FileWriter fileWriter = null;
     CSVPrinter csvFilePrinter = null;
+    boolean writeHeaders;
 
-    public void writeHeaders(String filename) throws IOException{
+    public void initializeCSVPrinter(File file) throws IOException{
         //Create the CSVFormat object with "\n" as a record delimiter
-        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(",");
+        CSVFormat csvFileFormat = CSVFormat.DEFAULT;
         //initialize FileWriter object
-        fileWriter = new FileWriter(filename);
+        fileWriter = new FileWriter(file, true);
         //initialize CSVPrinter object
         csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
         //Create CSV file header
-        csvFilePrinter.printRecord(FILE_HEADER);
+        if (writeHeaders){
+            csvFilePrinter.printRecord(FILE_HEADER);
+        }
+    }
+
+    public void setWriteHeaders(boolean check) throws IOException{
+        writeHeaders = check;
     }
 
     public void writeRow(List row) throws IOException{

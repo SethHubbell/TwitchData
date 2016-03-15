@@ -1,7 +1,8 @@
 ResponseObjects/PreviewJson.class
+Main.class
 ResponseObjects/ChannelJson.class
-TwitchPubApiCrawler.class
 RESTRequestHelper.class
+TwitchPubAPICrawler.class
 ResponseObjects/StreamJson.class
 ResponseObjects/LinksJson.class
 TwitchCSVWriter.class

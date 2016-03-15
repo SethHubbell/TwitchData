@@ -63,7 +63,7 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>TwitchPubApiCrawler</mainClass>
+                            <mainClass>Main</mainClass>
                         </configuration>
                     </execution>
                 </executions>

@@ -1,7 +1,8 @@
 /home/sethhubbell/IdeaProjects/TwitchData/src/main/java/TwitchCSVWriter.java
 /home/sethhubbell/IdeaProjects/TwitchData/src/main/java/ResponseObjects/ChannelJson.java
+/home/sethhubbell/IdeaProjects/TwitchData/src/main/java/Main.java
 /home/sethhubbell/IdeaProjects/TwitchData/src/main/java/ResponseObjects/PreviewJson.java
 /home/sethhubbell/IdeaProjects/TwitchData/src/main/java/ResponseObjects/StreamJson.java
 /home/sethhubbell/IdeaProjects/TwitchData/src/main/java/ResponseObjects/LinksJson.java
 /home/sethhubbell/IdeaProjects/TwitchData/src/main/java/RESTRequestHelper.java
-/home/sethhubbell/IdeaProjects/TwitchData/src/main/java/TwitchPubApiCrawler.java
+/home/sethhubbell/IdeaProjects/TwitchData/src/main/java/TwitchPubAPICrawler.java
